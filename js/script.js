@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    //Api RAWG Lógica de busca
+    // Lógica de busca da API RAWG
     const apiKey = "73ed6bc0d7a7472bba22721dbd927eb4"; 
     const btnPesquisar = document.getElementById('btnPesquisar');
     const inputPesquisa = document.getElementById('inputPesquisa');
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        //msg de carregamento
         vitrineJogos.innerHTML = "<p class='text-center w-100'>A procurar jogos na base de dados...</p>";
 
         fetch(`https://api.rawg.io/api/games?key=${apiKey}&search=${termoBusca}`)
@@ -28,12 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
 
-                // Cria um cartão para cada jogado buscado na api
                 jogos.forEach(jogo => {
                     const imagemUrl = jogo.background_image ? jogo.background_image : 'https://placehold.co/300x400/495057/FFF?text=Sem+Imagem';
                     
                     const cardHTML = `
-                        <div class="col-12 col-md-6 col-lg-3">
+                        <div class="col-12 col-md-6 col-lg-3 mb-4">
                             <div class="card h-100 shadow-sm">
                                 <img src="${imagemUrl}" class="card-img-top" alt="${jogo.name}">
                                 <div class="card-body d-flex flex-column">
@@ -43,7 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <button class="btn btn-primary mt-auto btn-abrir-modal" 
                                             data-bs-toggle="modal" 
                                             data-bs-target="#logModal"
-                                            data-nome="${jogo.name}">
+                                            data-nome="${jogo.name}"
+                                            data-imagem="${imagemUrl}">
                                         Adicionar ao Log
                                     </button>
                                 </div>
@@ -53,12 +52,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     vitrineJogos.innerHTML += cardHTML;
                 });
 
-                // Preenche o modal com o nome do jogo que escolheu
                 const botoesAbrirModal = document.querySelectorAll('.btn-abrir-modal');
                 botoesAbrirModal.forEach(botao => {
                     botao.addEventListener('click', function() {
                         const nomeSelecionado = this.getAttribute('data-nome');
+                        const imagemSelecionada = this.getAttribute('data-imagem');
+                        
                         document.getElementById('nomeJogo').value = nomeSelecionado;
+                        document.getElementById('imagemJogo').value = imagemSelecionada;
                     });
                 });
 
@@ -69,38 +70,34 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
-
-    //Lógica de localstorage
+    // Lógica do localStorage
     const btnSalvarLog = document.getElementById('btnSalvarLog');
 
     btnSalvarLog.addEventListener('click', function(event) {
-        
         event.preventDefault(); 
         
-        //Captura os valores do usuário
         const nome = document.getElementById('nomeJogo').value;
         const status = document.getElementById('statusJogo').value;
         const nota = document.getElementById('notaJogo').value;
         const review = document.getElementById('reviewJogo').value;
+        const imagem = document.getElementById('imagemJogo').value || 'https://placehold.co/300x400/495057/FFF?text=Sem+Imagem';
 
         if (nome === "") {
             alert("Por favor, digite o nome do jogo.");
             return;
         }
 
-        //Cria o jogo com base nos dados preenchidos
         const novoJogo = {
             id: Date.now(),
             nome: nome,
             status: status,
             nota: nota,
-            review: review
+            review: review,
+            imagem: imagem
         };
 
-        //Pega os jogos já cadastrados ou cria uma lista nova
         let listaJogos = JSON.parse(localStorage.getItem('bibliotecaJogos')) || [];
         
-        // Adiciona o jogo novo e guarda
         listaJogos.push(novoJogo);
         localStorage.setItem('bibliotecaJogos', JSON.stringify(listaJogos));
 
@@ -112,5 +109,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
         alert('Jogo guardado com sucesso!');
     });
-
 });

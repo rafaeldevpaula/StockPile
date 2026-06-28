@@ -1,4 +1,3 @@
-StockPile
 O StockPile é uma aplicação web simples desenvolvida para ajudar os utilizadores a organizar e gerir a sua biblioteca pessoal de videojogos.
 
 O objetivo principal da plataforma é permitir que qualquer pessoa possa pesquisar os seus jogos favoritos e adicioná-los a uma lista própria. Através desta lista, o utilizador consegue acompanhar facilmente o seu progresso, categorizando cada título com estados como "Quero Jogar", "A Jogar", "Terminado" ou "Abandonado".

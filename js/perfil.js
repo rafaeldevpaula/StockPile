@@ -1,7 +1,58 @@
 document.addEventListener('DOMContentLoaded', function() {
     calcularEstatisticas();
+    carregarPerfil();
+
+    const btnSalvarPerfil = document.getElementById('btnSalvarPerfil');
+    if (btnSalvarPerfil) {
+        btnSalvarPerfil.addEventListener('click', guardarPerfil);
+    }
 });
 
+// carrega perfil do LocalStorage
+function carregarPerfil() {
+    const dadosPerfil = JSON.parse(localStorage.getItem('dadosPerfilStockpile')) || {
+        nome: 'Insira um nome',
+        bio: 'Sua bio!'
+    };
+
+    // Atualiza os elementos visíveis na página
+    document.getElementById('nomePerfil').textContent = dadosPerfil.nome;
+    document.getElementById('bioPerfil').textContent = dadosPerfil.bio;
+
+    // Preenche os campos do Modal
+    document.getElementById('inputNomePerfil').value = dadosPerfil.nome;
+    document.getElementById('inputBioPerfil').value = dadosPerfil.bio;
+}
+
+// Função que grava os dados introduzidos no Modal
+function guardarPerfil() {
+    const nomeForm = document.getElementById('inputNomePerfil').value;
+    const bioForm = document.getElementById('inputBioPerfil').value;
+
+    if (nomeForm.trim() === "") {
+        alert("O nome não pode estar vazio!");
+        return;
+    }
+
+    // Cria o objeto com os dados
+    const novosDados = {
+        nome: nomeForm,
+        bio: bioForm
+    };
+
+    // Guarda no localStorage do navegador
+    localStorage.setItem('dadosPerfilStockpile', JSON.stringify(novosDados));
+
+    // Atualiza a página imediatamente com os novos dados
+    carregarPerfil();
+
+    // Esconde o Modal do Bootstrap
+    const modalElement = document.getElementById('modalEditarPerfil');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    modalInstance.hide();
+}
+
+// Cálculo das estatísticas
 function calcularEstatisticas() {
     const lista = JSON.parse(localStorage.getItem('bibliotecaJogos')) || [];
 

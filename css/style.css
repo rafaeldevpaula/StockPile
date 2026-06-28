@@ -1,9 +1,16 @@
 .carousel-item img { 
-    height: 400px; 
+    height: 600px; 
     object-fit: cover; 
 }
 
 .card-img-top { 
     height: 250px; 
     object-fit: cover; 
+}
+
+.jersey-10-regular {
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-size: 40px;
+  font-style: normal;
 }

@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             data-bs-target="#logModal"
                                             data-nome="${jogo.name}"
                                             data-imagem="${imagemUrl}">
-                                        Adicionar ao Log
+                                        Adicionar a Lista
                                     </button>
                                 </div>
                             </div>

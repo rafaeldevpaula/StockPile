@@ -57,7 +57,7 @@ function excluirJogo(id) {
 function formatarStatus(status) {
     const statusMap = {
         'quero_jogar': 'Quero Jogar',
-        'jogando': 'A Jogar',
+        'jogando': 'Jogando',
         'zerado': 'Terminado',
         'abandonado': 'Abandonado'
     };

@@ -73,12 +73,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Lógica do localStorage
     const btnSalvarLog = document.getElementById('btnSalvarLog');
 
+    const statusJogo = document.getElementById("statusJogo");
+    const notaJogo = document.getElementById("notaJogo");
+
+    function atualizarCampos() {
+        if (statusJogo.value === "quero_jogar") {
+            notaJogo.disabled = true;
+
+            notaJogo.value = "";
+        } else {
+            notaJogo.disabled = false;
+        }
+    }
+
+    statusJogo.addEventListener("change", atualizarCampos);
+    atualizarCampos();
+
     btnSalvarLog.addEventListener('click', function(event) {
         event.preventDefault(); 
         
         const nome = document.getElementById('nomeJogo').value;
         const status = document.getElementById('statusJogo').value;
-        const nota = document.getElementById('notaJogo').value;
+        const nota = status === "quero_jogar" ? "" : notaJogo.value;
         const review = document.getElementById('reviewJogo').value;
         const imagem = document.getElementById('imagemJogo').value || 'https://placehold.co/300x400/495057/FFF?text=Sem+Imagem';
 

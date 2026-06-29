@@ -24,8 +24,13 @@ function carregarLista() {
                         <h5 class="card-title">${jogo.nome}</h5>
                         <p class="mb-1">Status: <span class="badge bg-secondary">${formatarStatus(jogo.status)}</span></p>
                         <p class="mb-1">Nota: <strong>${jogo.nota ? jogo.nota + '/5' : 'S/N'}</strong></p>
-                        <p class="mb-3 text-muted" style="font-size: 0.9em;">${jogo.review || 'Sem anotações.'}</p>
+                        <p class="mb-2 text-muted review-card">${jogo.review || 'Sem anotações.'}</p>
+                        <button class="btn btn-link p-0 btn-ler-mais" data-id="${jogo.id}">Ler mais</button>
                         
+                        <button class="btn btn-outline-warning mt-auto mb-2 btn-editar" data-id="${jogo.id}">
+                            Editar
+                        </button>
+
                         <button class="btn btn-outline-danger mt-auto btn-excluir" data-id="${jogo.id}">
                             Excluir
                         </button>

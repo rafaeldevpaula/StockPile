@@ -1,0 +1,14 @@
+.review-card {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+}
+
+.btn-ler-mais {
+    margin-left: 10rem;
+    margin-bottom: 0.5rem;
+    color: black;
+    text-decoration: none;
+}

@@ -2,12 +2,14 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Lista | StockPile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="img/favicon.png">
 </head>
 
 <body class="bg-light">
@@ -17,21 +19,197 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
                     <li class="nav-item"><a class="nav-link active" href="lista.html">Minha Lista</a></li>
                     <li class="nav-item"><a class="nav-link" href="perfil.html">Meu Perfil</a></li>
+                    <li class="nav-item ms-lg-3" id="navAuthArea">
+                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalAuth">Entrar</button>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        <h2>Meus Jogos</h2>
-        <div id="listaJogosContainer" class="row g-4 mt-2">
+    <div class="container my-5">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+            <h2 class="mb-0">Meus Jogos</h2>
+            <div id="areaExclusaoMassa"></div>
+        </div>
+
+        <div class="card p-3 border-0 shadow-sm mb-4">
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label for="filtroBusca" class="form-label fw-semibold">Pesquisar por título</label>
+                    <input type="text" id="filtroBusca" class="form-control" placeholder="Digite para filtrar...">
+                </div>
+                <div class="col-12 col-md-6">
+                    <label for="filtroStatus" class="form-label fw-semibold">Filtrar por status</label>
+                    <select id="filtroStatus" class="form-select">
+                        <option value="todos">Todos os Status</option>
+                        <option value="jogando">Jogando</option>
+                        <option value="quero_jogar">Quero Jogar</option>
+                        <option value="zerado">Terminado</option>
+                        <option value="abandonado">Abandonado</option>
+                    </select>
+                </div>
             </div>
+        </div>
+
+        <div id="listaJogosContainer" class="row g-4 mt-2"></div>
     </div>
 
-    <script src="js/lista.js"></script> </body>
+    <div class="modal fade" id="modalEditarJogo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white border-0 py-3">
+                    <h5 class="modal-title">Editar Jogo</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="formEditarJogo">
+                        <input type="hidden" id="editJogoId">
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nome do Jogo</label>
+                            <input type="text" class="form-control bg-light" id="editNomeJogo" required readonly>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Status</label>
+                            <select class="form-select" id="editStatusJogo">
+                                <option value="jogando">Jogando</option>
+                                <option value="quero_jogar">Quero Jogar</option>
+                                <option value="zerado">Terminado</option>
+                                <option value="abandonado">Abandonado</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nota (1 a 5)</label>
+                            <input type="number" class="form-control" id="editNotaJogo" min="1" max="5">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Review / Anotações</label>
+                            <textarea class="form-control" id="editReviewJogo" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary px-4 py-2" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success px-4 py-2" id="btnSalvarEdicaoJogo">Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAuth" tabindex="-1" aria-labelledby="modalAuthLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white border-0 py-3">
+                    <h5 class="modal-title jersey-10-regular text-purple fs-2" id="modalAuthLabel">StockPile</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light rounded-pill" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active rounded-pill fw-semibold py-2" id="tab-login" data-bs-toggle="pill" data-bs-target="#panel-login" type="button" role="tab" aria-selected="true">Entrar</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill fw-semibold py-2" id="tab-cadastro" data-bs-toggle="pill" data-bs-target="#panel-cadastro" type="button" role="tab" aria-selected="false">Cadastrar-se</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="panel-login" role="tabpanel" aria-labelledby="tab-login">
+                            <form id="formLogin">
+                                <div class="mb-3">
+                                    <label for="loginUsername" class="form-label fw-semibold">Usuário</label>
+                                    <input type="text" class="form-control py-2" id="loginUsername" placeholder="Digite seu usuário..." required autocomplete="username">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="loginPassword" class="form-label fw-semibold">Senha</label>
+                                    <input type="password" class="form-control py-2" id="loginPassword" placeholder="Digite sua senha..." required autocomplete="current-password">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-2.5 mt-3 fw-bold shadow-sm">Fazer Login</button>
+                            </form>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="panel-cadastro" role="tabpanel" aria-labelledby="tab-cadastro">
+                            <form id="formCadastro">
+                                <div class="mb-3">
+                                    <label for="cadName" class="form-label fw-semibold">Nome Completo</label>
+                                    <input type="text" class="form-control py-2" id="cadName" placeholder="Ex: Gabriel Silva..." required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cadUsername" class="form-label fw-semibold">Nome de Usuário</label>
+                                    <input type="text" class="form-control py-2" id="cadUsername" placeholder="Ex: gabrielsilva..." required>
+                                    <div class="form-text">Usado para fazer login (sem espaços ou caracteres especiais).</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cadBio" class="form-label fw-semibold">Biografia / Descrição (Opcional)</label>
+                                    <input type="text" class="form-control py-2" id="cadBio" placeholder="Ex: Apaixonado por RPGs e jogos retrô...">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cadPassword" class="form-label fw-semibold">Senha</label>
+                                        <input type="password" class="form-control py-2" id="cadPassword" placeholder="Crie uma senha..." required autocomplete="new-password">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cadConfirmPassword" class="form-label fw-semibold">Confirmar Senha</label>
+                                        <input type="password" class="form-control py-2" id="cadConfirmPassword" placeholder="Repita a senha..." required autocomplete="new-password">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100 py-2.5 mt-3 fw-bold shadow-sm border-0">Criar Minha Conta</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="customConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered confirm-modal-dialog">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-body p-4 text-center">
+                    <h5 class="fw-bold mb-2">Confirmação</h5>
+                    <p class="text-muted mb-4 confirm-text" id="confirmModalText">Mensagem</p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger rounded-pill px-4" id="btnConfirmarAcao">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDetalhesJogo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white border-0 py-3">
+                    <h5 class="modal-title text-white" id="detalheNomeJogo">Nome do Jogo</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <img id="detalheImagemJogo" class="img-fluid rounded mb-3 shadow-sm detalhe-img" alt="Capa do Jogo">
+                    <div class="d-flex justify-content-center gap-2 mb-3">
+                        <span id="detalheStatusJogo" class="badge">Status</span>
+                        <span class="badge bg-purple-badge" id="detalheNotaJogo">Nota</span>
+                    </div>
+                    <div class="text-start bg-light p-3 rounded detalhe-review-box">
+                        <h6 class="fw-bold mb-2">Anotações:</h6>
+                        <p id="detalheReviewJogo" class="text-muted mb-0 text-break" style="font-size: 0.95em;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/lista.js"></script>
+</body>
 </html>

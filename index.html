@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="img/favicon.png">
 </head>
 
 <body class="bg-light">
@@ -19,10 +20,13 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link active" href="index.html">Início</a></li>
                     <li class="nav-item"><a class="nav-link" href="lista.html">Minha Lista</a></li>
                     <li class="nav-item"><a class="nav-link" href="perfil.html">Meu Perfil</a></li>
+                    <li class="nav-item ms-lg-3" id="navAuthArea">
+                        <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalAuth">Entrar</button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -37,19 +41,22 @@
 
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="/img/gta6.jpg" class="d-block w-100" alt="GTA6">
+                <div class="carousel-bg-blur" style="background-image: url('img/gta6.jpg');"></div>
+                <img src="img/gta6.jpg" class="d-block carousel-img-contain" alt="GTA6">
                 <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
                 </div>
             </div>
             
             <div class="carousel-item">
-                <img src="/img/eafc26.jpg" class="d-block w-100 img-eafc" alt="EAFC26">
+                <div class="carousel-bg-blur" style="background-image: url('img/eafc26.jpg');"></div>
+                <img src="img/eafc26.jpg" class="d-block carousel-img-contain" alt="EAFC26">
                 <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
                 </div>
             </div>
 
             <div class="carousel-item">
-                <img src="/img/re9.jpg" class="d-block w-100" alt="Resident Evil 9">
+                <div class="carousel-bg-blur" style="background-image: url('img/re9.jpg');"></div>
+                <img src="img/re9.jpg" class="d-block carousel-img-contain" alt="Resident Evil 9">
                 <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
                 </div>
             </div>
@@ -118,7 +125,89 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalAuth" tabindex="-1" aria-labelledby="modalAuthLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white border-0 py-3">
+                    <h5 class="modal-title jersey-10-regular text-purple fs-2" id="modalAuthLabel">StockPile</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light rounded-pill" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active rounded-pill fw-semibold py-2" id="tab-login" data-bs-toggle="pill" data-bs-target="#panel-login" type="button" role="tab" aria-selected="true">Entrar</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill fw-semibold py-2" id="tab-cadastro" data-bs-toggle="pill" data-bs-target="#panel-cadastro" type="button" role="tab" aria-selected="false">Cadastrar-se</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="panel-login" role="tabpanel" aria-labelledby="tab-login">
+                            <form id="formLogin">
+                                <div class="mb-3">
+                                    <label for="loginUsername" class="form-label fw-semibold">Usuário</label>
+                                    <input type="text" class="form-control py-2" id="loginUsername" placeholder="Digite seu usuário..." required autocomplete="username">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="loginPassword" class="form-label fw-semibold">Senha</label>
+                                    <input type="password" class="form-control py-2" id="loginPassword" placeholder="Digite sua senha..." required autocomplete="current-password">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-2.5 mt-3 fw-bold shadow-sm">Fazer Login</button>
+                            </form>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="panel-cadastro" role="tabpanel" aria-labelledby="tab-cadastro">
+                            <form id="formCadastro">
+                                <div class="mb-3">
+                                    <label for="cadName" class="form-label fw-semibold">Nome Completo</label>
+                                    <input type="text" class="form-control py-2" id="cadName" placeholder="Ex: Gabriel Silva..." required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cadUsername" class="form-label fw-semibold">Nome de Usuário</label>
+                                    <input type="text" class="form-control py-2" id="cadUsername" placeholder="Ex: gabrielsilva..." required>
+                                    <div class="form-text">Usado para fazer login (sem espaços ou caracteres especiais).</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cadBio" class="form-label fw-semibold">Biografia / Descrição (Opcional)</label>
+                                    <input type="text" class="form-control py-2" id="cadBio" placeholder="Ex: Apaixonado por RPGs e jogos retrô...">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cadPassword" class="form-label fw-semibold">Senha</label>
+                                        <input type="password" class="form-control py-2" id="cadPassword" placeholder="Crie uma senha..." required autocomplete="new-password">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cadConfirmPassword" class="form-label fw-semibold">Confirmar Senha</label>
+                                        <input type="password" class="form-control py-2" id="cadConfirmPassword" placeholder="Repita a senha..." required autocomplete="new-password">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100 py-2.5 mt-3 fw-bold shadow-sm border-0">Criar Minha Conta</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="customConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered confirm-modal-dialog">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-body p-4 text-center">
+                    <h5 class="fw-bold mb-2">Confirmação</h5>
+                    <p class="text-muted mb-4 confirm-text" id="confirmModalText">Mensagem</p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger rounded-pill px-4" id="btnConfirmarAcao">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

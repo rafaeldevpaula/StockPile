@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const usuarioLogado = obterUsuarioLogado();
+    if (!usuarioLogado) {
+        exibirMensagemSemLogin();
+        return;
+    }
+
     calcularEstatisticas();
     carregarPerfil();
 
@@ -8,53 +14,93 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// carrega perfil do LocalStorage
-function carregarPerfil() {
-    const dadosPerfil = JSON.parse(localStorage.getItem('dadosPerfilStockpile')) || {
-        nome: 'Insira um nome',
-        bio: 'Sua bio!'
-    };
-
-    // Atualiza os elementos visíveis na página
-    document.getElementById('nomePerfil').textContent = dadosPerfil.nome;
-    document.getElementById('bioPerfil').textContent = dadosPerfil.bio;
-
-    // Preenche os campos do Modal
-    document.getElementById('inputNomePerfil').value = dadosPerfil.nome;
-    document.getElementById('inputBioPerfil').value = dadosPerfil.bio;
+function exibirMensagemSemLogin() {
+    const container = document.querySelector('.container.my-5');
+    if (!container) return;
+    
+    container.innerHTML = `
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm text-center p-5 border-0 rounded-16">
+                    <h3 class="mb-3 fw-bold">Gerencie seu Perfil</h3>
+                    <p class="text-muted mb-4">Faça login ou cadastre-se para visualizar suas estatísticas de jogo e personalizar seu perfil público de jogador.</p>
+                    <button class="btn btn-primary py-2.5 px-5 rounded-pill fw-bold shadow-sm" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#modalAuth">
+                        Fazer Login / Registrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
-// Função que grava os dados introduzidos no Modal
+function carregarPerfil() {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) return;
+
+    const perfilKey = `dadosPerfil_${usuario}`;
+    
+    const dadosPerfil = JSON.parse(localStorage.getItem(perfilKey)) || {
+        nome: obterDadosUsuarioAtivo().name || usuario,
+        bio: obterDadosUsuarioAtivo().bio || 'Novato na comunidade.'
+    };
+
+    const nomeEl = document.getElementById('nomePerfil');
+    const bioEl = document.getElementById('bioPerfil');
+    if (nomeEl) nomeEl.textContent = dadosPerfil.nome;
+    if (bioEl) bioEl.textContent = dadosPerfil.bio;
+
+    const inputNome = document.getElementById('inputNomePerfil');
+    const inputBio = document.getElementById('inputBioPerfil');
+    if (inputNome) inputNome.value = dadosPerfil.nome;
+    if (inputBio) inputBio.value = dadosPerfil.bio;
+}
+
 function guardarPerfil() {
+    const usuario = obterUsuarioLogado();
+    if (!usuario) return;
+
     const nomeForm = document.getElementById('inputNomePerfil').value;
     const bioForm = document.getElementById('inputBioPerfil').value;
 
     if (nomeForm.trim() === "") {
-        alert("O nome não pode estar vazio!");
+        mostrarToast("O nome não pode estar vazio!", "warning");
         return;
     }
 
-    // Cria o objeto com os dados
     const novosDados = {
         nome: nomeForm,
         bio: bioForm
     };
 
-    // Guarda no localStorage do navegador
-    localStorage.setItem('dadosPerfilStockpile', JSON.stringify(novosDados));
+    const perfilKey = `dadosPerfil_${usuario}`;
+    localStorage.setItem(perfilKey, JSON.stringify(novosDados));
 
-    // Atualiza a página imediatamente com os novos dados
+    const usuarios = JSON.parse(localStorage.getItem('usuariosStockpile')) || [];
+    const index = usuarios.findIndex(u => u.username === usuario);
+    if (index !== -1) {
+        usuarios[index].name = nomeForm;
+        usuarios[index].bio = bioForm;
+        localStorage.setItem('usuariosStockpile', JSON.stringify(usuarios));
+    }
+
     carregarPerfil();
+    atualizarNavbarAuth();
 
-    // Esconde o Modal do Bootstrap
     const modalElement = document.getElementById('modalEditarPerfil');
     const modalInstance = bootstrap.Modal.getInstance(modalElement);
     modalInstance.hide();
+    
+    mostrarToast('Perfil atualizado com sucesso!', 'success');
 }
 
-// Cálculo das estatísticas
 function calcularEstatisticas() {
-    const lista = JSON.parse(localStorage.getItem('bibliotecaJogos')) || [];
+    const usuario = obterUsuarioLogado();
+    if (!usuario) return;
+
+    const key = `bibliotecaJogos_${usuario}`;
+    const lista = JSON.parse(localStorage.getItem(key)) || [];
 
     const totalJogos = lista.length;
     const zerados = lista.filter(jogo => jogo.status === 'zerado').length;
@@ -63,6 +109,7 @@ function calcularEstatisticas() {
     const queroJogar = lista.filter(jogo => jogo.status === 'quero_jogar').length;
 
     const container = document.getElementById('containerEstatisticas');
+    if (!container) return;
     
     container.innerHTML = `
         <div class="col-6 col-md-4">
@@ -80,7 +127,7 @@ function calcularEstatisticas() {
         <div class="col-6 col-md-4">
             <div class="p-3 border bg-light rounded shadow-sm">
                 <h2 class="mb-0 text-warning">${jogando}</h2>
-                <small class="text-muted">A Jogar</small>
+                <small class="text-muted">Jogando</small>
             </div>
         </div>
         <div class="col-6 col-md-6">

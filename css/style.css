@@ -2,16 +2,42 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f4f6f9; /* Um cinza mais chique que o padrão */
+    background-color: #f4f6f9;
 }
 
-.carousel-item img { 
-    height: 645px; 
-    object-fit: cover; 
+.carousel-item {
+    height: 450px;
+    position: relative;
+    overflow: hidden;
+    background-color: #0d0d13;
 }
 
-.img-eafc {
-    object-position: center top;
+@media (max-width: 768px) {
+    .carousel-item {
+        height: 250px;
+    }
+}
+
+.carousel-bg-blur {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px) brightness(0.45);
+    z-index: 1;
+}
+
+.carousel-img-contain {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    width: auto !important;
+    max-width: 100%;
+    margin: 0 auto;
+    object-fit: contain;
 }
 
 .card-img-top { 
@@ -76,4 +102,186 @@ body {
     color: #ffffff; 
     transform: translateY(-2px); 
     box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4); 
+}
+
+#navAuthArea {
+    min-width: 120px;
+}
+
+.text-purple {
+    color: #8335db !important;
+}
+
+.bg-purple-badge {
+    background-color: rgba(131, 53, 219, 0.15) !important;
+    border: 1px solid rgba(131, 53, 219, 0.4);
+    color: #c084fc !important;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.modal-content {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #1e1e2d !important;
+    border-bottom: none;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.nav-pills .nav-link {
+    color: #495057;
+    transition: all 0.2s ease;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #8335db !important;
+    color: #ffffff !important;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #8335db;
+    box-shadow: 0 0 0 0.25rem rgba(131, 53, 219, 0.25) !important;
+}
+
+.btn-success {
+    background-color: #10b981;
+    border: none;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-success:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+}
+
+.btn {
+    transition: all 0.2s ease;
+}
+
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.custom-toast {
+    background-color: #1e1e2d;
+    color: #ffffff;
+    border-left: 5px solid #8335db;
+    padding: 14px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 280px;
+    max-width: 400px;
+    animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards, toastFadeOut 0.3s 3.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+}
+
+.custom-toast.toast-success {
+    border-left-color: #10b981;
+}
+
+.custom-toast.toast-danger {
+    border-left-color: #ef4444;
+}
+
+.custom-toast.toast-warning {
+    border-left-color: #f59e0b;
+}
+
+@keyframes toastSlideIn {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastFadeOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+}
+
+#modalAuthLabel {
+    color: #a78bfa !important;
+    font-size: 2.2rem !important;
+}
+
+.confirm-modal-dialog {
+    max-width: 400px;
+}
+
+.confirm-text {
+    font-size: 0.95em;
+}
+
+#btnConfirmarAcao {
+    background-color: #ef4444;
+    border: none;
+}
+
+#btnConfirmarAcao:hover {
+    background-color: #dc2626;
+}
+
+.rounded-16 {
+    border-radius: 16px !important;
+}
+
+.library-card-img {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.game-note-text {
+    font-size: 0.9em;
+}
+
+.game-review-text {
+    font-size: 0.85em;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.game-card-clickable {
+    cursor: pointer;
+}
+
+.detalhe-img {
+    max-height: 300px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.detalhe-review-box {
+    max-height: 200px;
+    overflow-y: auto;
 }
